@@ -919,8 +919,5 @@ memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
 	};
 };
 
-&optee{
-	status = "okay";
-};
 /* USER CODE END addons */
 

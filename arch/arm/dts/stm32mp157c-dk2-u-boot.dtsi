@@ -31,9 +31,8 @@
 		u-boot,error-led = "error";
 		st,adc_usb_pd = <&adc1 18>, <&adc1 19>;
 		st,fastboot-gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
-		st,stm32prog-gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
-		u-boot,mmc-env-partition = "ssbl";
 		st,stm32prog-gpios = <&gpiod 9 GPIO_ACTIVE_LOW>;
+		u-boot,mmc-env-partition = "ssbl";
 	};
 	led {
 		red {

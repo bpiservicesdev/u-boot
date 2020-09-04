@@ -20,7 +20,7 @@
 /* USER CODE END includes */
 
 / {
-	model = "STMicroelectronics STM32MP157C-DK2 STM32CubeMX board";
+	model = "iMatch45 board";
 	compatible = "st,stm32mp157c-osd32mp1-mx", "st,stm32mp157";
 
 	memory@c0000000 {
@@ -116,7 +116,7 @@
 		};
 	};
 
-	usb_phy_tuning: usb-phy-tuning {
+	usb_phy_tuning:usb-phy-tuning{
 		st,hs-dc-level = <2>;
 		st,fs-rftime-tuning;
 		st,hs-rftime-reduction;
@@ -567,11 +567,12 @@
 				regulator-over-current-protection;
 			};
 
-			vdd_usb: ldo4 {
+			vdd_usb:ldo4{
 				regulator-name = "vdd_usb";
 				regulator-min-microvolt = <3300000>;
 				regulator-max-microvolt = <3300000>;
 				interrupts = <IT_CURLIM_LDO4 0>;
+				regulator-always-on;
 			};
 
 			vdda: ldo5 {
@@ -822,8 +823,76 @@ memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
 		<&vdev0vring1>, <&vdev0buffer>;
 };
 
+&usbh_ehci{
+	status = "okay";
+
+	/* USER CODE BEGIN usbh_ehci */
+	phys = <&usbphyc_port0>;
+	/* USER CODE END usbh_ehci */
+};
+
+&usbh_ohci{
+	status = "okay";
+
+	/* USER CODE BEGIN usbh_ohci */
+	/* USER CODE END usbh_ohci */
+};
+
+&usbotg_hs{
+	u-boot,dm-pre-reloc;
+	status = "okay";
+
+	/* USER CODE BEGIN usbotg_hs */
+	phys = <&usbphyc_port1 0>;
+	phy-names = "usb2-phy";
+	/* USER CODE END usbotg_hs */
+};
+
+&usbphyc{
+	u-boot,dm-pre-reloc;
+	status = "okay";
+
+	/* USER CODE BEGIN usbphyc */
+	/* USER CODE END usbphyc */
+};
+
+&usbphyc_port0{
+	u-boot,dm-pre-reloc;
+	status = "okay";
+
+	/* USER CODE BEGIN usbphyc_port0 */
+	phy-supply = <&vdd_usb>;
+	st,phy-tuning = <&usb_phy_tuning>;
+	/* USER CODE END usbphyc_port0 */
+};
+
+&usbphyc_port1{
+	u-boot,dm-pre-reloc;
+	status = "okay";
+
+	/* USER CODE BEGIN usbphyc_port1 */
+	phy-supply = <&vdd_usb>;
+	st,phy-tuning = <&usb_phy_tuning>;
+	/* USER CODE END usbphyc_port1 */
+};
+
+&vrefbuf{
+	status = "okay";
+
+	/* USER CODE BEGIN vrefbuf */
+	regulator-min-microvolt = <2500000>;
+	regulator-max-microvolt = <2500000>;
+	vdda-supply = <&vdd>;
+	/* USER CODE END vrefbuf */
+};
+
+/* USER CODE BEGIN addons */
 &adc {
 	status = "disabled";
+};
+
+&usbh_ohci{
+	phys = <&usbphyc_port0>;
 };
 
 &cpu0{
@@ -840,6 +909,18 @@ memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
 
 &dma2 {
 	sram = <&dma_pool>;
+};
+
+&sram{
+
+	dma_pool:dma_pool@0{
+		reg = <0x50000 0x10000>;
+		pool;
+	};
+};
+
+&optee{
+	status = "okay";
 };
 /* USER CODE END addons */
 
